@@ -8,77 +8,62 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #ecf0f1;
+            color: #fff;
             padding: 15px;
         }
         .portal-card {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            color: #2c3e50;
-            max-width: 480px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #333;
+            max-width: 450px;
             width: 100%;
         }
         .qr-img {
-            max-width: 200px;
-            border: 2px solid #3498db;
-            border-radius: 15px;
-            padding: 10px;
+            max-width: 150px;
+            border: 2px solid #1e3c72;
+            border-radius: 10px;
+            padding: 5px;
             background: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         .info-text {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-style: italic;
-            opacity: 0.8;
-            margin-top: 20px;
-            color: #7f8c8d;
-            line-height: 1.5;
+            opacity: 0.7;
+            margin-top: 25px;
+            color: #666;
+            line-height: 1.4;
         }
-        h3 {
-            color: #2980b9;
-            font-weight: 700;
-        }
-        .btn-primary {
-            background-color: #2980b9;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #34495e;
-            transform: translateY(-2px);
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
     </style>
 </head>
 <body>
 
 <div class="portal-card text-center">
-    <h3 class="mb-4">بوابة استخراج الأكواد</h3>
-    <p class="text-muted small mb-4">أدخل اسمك (ثنائياً أو ثلاثياً) أو رقم الموبايل للحصول على كود الحضور</p>
+    <h3 class="mb-4" style="color: #1e3c72; font-weight: bold;">بوابة استخراج الأكواد</h3>
+    <p class="text-muted small">أدخل اسمك (ثنائياً أو ثلاثياً) أو رقم تليفونك للحصول على كود الحضور والـ QR</p>
     
-    <div class="mb-4">
-        <!-- دعم البحث برقم التليفون أو الاسم -->
-        <input type="text" id="searchInput" class="form-control form-control-lg text-center shadow-sm" placeholder="اكتب اسمك أو رقم موبايلك...">
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control form-control-lg text-center" placeholder="اكتب اسمك أو رقم موبايلك...">
     </div>
-    <button onclick="searchStudent()" class="btn btn-primary btn-lg w-100 mb-4 shadow-sm">بحث واستخراج 🔍</button>
+    <button onclick="searchStudent()" class="btn btn-primary btn-lg w-100 mb-4" style="background: #1e3c72; border: none;">بحث واستخراج 🔍</button>
 
     <!-- منطقة عرض النتيجة -->
     <div id="resultArea" style="display: none;">
-        <h4 id="studentName" style="color: #2c3e50; font-weight: 600;" class="mb-2"></h4>
-        <p class="text-muted mb-4">كود الحضور: <strong id="studentID" style="color: #e74c3c; font-size: 1.3rem;"></strong></p>
-        <div class="mb-4">
-            <img id="qrImage" src="" class="qr-img" alt="QR Code">
-        </div>
-        <button id="downloadBtn" class="btn btn-success w-100 shadow-sm mb-3">تحميل صورة الـ QR 📥</button>
-        
-        <!-- السطر الإيطاليك الخفيف -->
+        <div id="cardsContainer"></div>
         <p class="info-text">
             * رجاءً الاحتفاظ بهذه الصورة في مكان سهل الوصول إليه على موبايلك، فالكود والـ QR كود هما هويتك الأساسية في الكورال ويجب إظهارهما عند باب القاعة في كل بروفة.
         </p>
@@ -88,7 +73,7 @@
 <script>
     let studentsDatabase = [];
 
-    // جلب ملف JSON من الريبو الجديد
+    // جلب ملف JSON المحدث من الريبو الجديد
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
@@ -97,8 +82,7 @@
         .catch(err => console.error("Error loading student database:", err));
 
     function normalizeArabic(text) {
-        if (!text) return "";
-        return String(text)
+        return text
             .replace(/[أإآا]/g, 'ا')
             .replace(/[ىي]/g, 'ي')
             .replace(/[ةه]/g, 'ه')
@@ -111,41 +95,60 @@
         const rawInput = document.getElementById('searchInput').value.trim();
         const query = normalizeArabic(rawInput);
         const resultArea = document.getElementById('resultArea');
+        const cardsContainer = document.getElementById('cardsContainer');
         
+        cardsContainer.innerHTML = ""; // تنظيف النتائج السابقة
+
         if (!query) {
             alert("من فضلك اكتب الاسم أو رقم التليفون أولاً");
             return;
         }
 
-        let found;
+        let matches = [];
 
-        // لو المدخل أرقام فقط، يبحث برقم الموبايل
+        // لو المدخل أرقام يبحث برقم الموبايل
         if (/^\d+$/.test(rawInput)) {
-            // تنظيف الرقم من الصفر الشمال أو كود الدولة للتطابق
             const cleanInput = rawInput.replace(/^0/, '').replace(/^20/, '');
-            found = studentsDatabase.find(student => {
+            matches = studentsDatabase.filter(student => {
                 const cleanPhone = String(student.phone).replace(/^0/, '').replace(/^20/, '');
                 return cleanPhone.includes(cleanInput);
             });
         } else {
-            // البحث الذكي بالاسم الثنائي أو الثلاثي
+            // البحث الذكي بالاسم الثنائي أو الثلاثي ودعم الحروف الإنجليزية كابيتال وسمول
             const queryWords = query.split(" ");
-            found = studentsDatabase.find(student => {
+            matches = studentsDatabase.filter(student => {
                 const normalizedStudentName = normalizeArabic(student.name);
                 return queryWords.every(word => normalizedStudentName.includes(word));
             });
         }
 
-        if (found) {
-            document.getElementById('studentName').innerText = found.name;
-            document.getElementById('studentID').innerText = found.id;
-            
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${found.id}`;
-            document.getElementById('qrImage').src = qrUrl;
-            
-            document.getElementById('downloadBtn').onclick = function() {
-                downloadQR(qrUrl, `${found.name}_QR.png`);
-            };
+        if (matches.length > 0) {
+            // توليد كارت لكل كورال مسجل فيه الطالب
+            matches.forEach(student => {
+                // استخراج اسم الكورال تلقائياً بناءً على كود الطالب
+                const idPrefix = String(student.id).charAt(0);
+                let choirName = "Unknown Choir";
+                if (idPrefix === "1") choirName = "Hows Erof";
+                else if (idPrefix === "2") choirName = "Saint Antony";
+                else if (idPrefix === "3") choirName = "Saint Pavly";
+                else if (idPrefix === "4") choirName = "Operete";
+                else if (idPrefix === "5") choirName = "Mowhobeen";
+
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${student.id}`;
+
+                const cardHtml = `
+                    <div class="result-card text-center">
+                        <h4 style="color: #1e3c72; font-weight: bold;">${student.name}</h4>
+                        <p class="mb-1 text-muted">الكورال: <strong style="color: #2a5298;">${choirName}</strong></p>
+                        <p class="text-muted mb-3">كود الحضور: <strong style="color: #d9534f; font-size: 1.2rem;">${student.id}</strong></p>
+                        <div class="mb-3">
+                            <img src="${qrUrl}" class="qr-img" alt="QR Code">
+                        </div>
+                        <button onclick="downloadQR('${qrUrl}', '${student.name}_${choirName}_QR.png')" class="btn btn-success btn-sm w-100 mb-2">تحميل صورة الـ QR 📥</button>
+                    </div>
+                `;
+                cardsContainer.innerHTML += cardHtml;
+            });
 
             resultArea.style.display = 'block';
         } else {
