@@ -173,11 +173,9 @@
             .toLowerCase();
     }
 
+    // دالة تنظيف أرقام الموبايل وقص أي علامات أو رموز والاحتفاظ بالأرقام فقط
     function normalizePhone(phone) {
-        return String(phone)
-            .replace(/[\s-+]/g, '') // حذف الفواصل والإشارات
-            .replace(/^0/, '')      // حذف الصفر الشمال
-            .replace(/^20/, '');    // حذف كود الدولة
+        return String(phone).replace(/\D/g, ''); // يحذف كل شيء ليس رقماً (يمسح الزائد والمسافات)
     }
 
     function searchStudent() {
@@ -193,13 +191,12 @@
             return;
         }
 
-        // البحث والمطابقة بالاسم وآخر 4 أرقام من الموبايل
         const queryWords = inputName.split(" ");
         const matches = studentsDatabase.filter(student => {
             const normalizedStudentName = normalizeArabic(student.name);
             const normalizedStudentPhone = normalizePhone(student.phone);
             
-            // استخراج آخر 4 أرقام من الموبايل المسجل في قاعدة البيانات
+            // سحب آخر 4 أرقام بدقة لأي رقم موبايل محلي أو دولي
             const registeredLast4 = normalizedStudentPhone.slice(-4);
 
             const isNameMatch = queryWords.every(word => normalizedStudentName.includes(word));
@@ -212,7 +209,7 @@
             matches.forEach(student => {
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${student.id}`;
                 
-                let badgeStyle = "background-color: #e6f4ea; color: #1e7e34; border: 1.5px solid #218838;"; // Committed
+                let badgeStyle = "background-color: #e6f4ea; color: #1e7e34; border: 1.5px solid #218838;";
                 if (student.commitment_status.includes("Dismissed")) {
                     badgeStyle = "background-color: #fce8e6; color: #a80000; border: 1.5px solid #dc3545;";
                 } else if (student.commitment_status.includes("Danger")) {
