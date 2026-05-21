@@ -3,74 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة متابعة حضور أعضاء الكورال</title>
+    <title>بوابة متابعة الحضور والالتزام</title>
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background-color: #f8fafc; /* خلفية ناعمة فاتحة مواكبة لعام 2026 */
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            color: #334155;
             padding: 15px;
         }
         .portal-card {
-            background: rgba(255, 255, 255, 0.97);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            color: #333;
-            max-width: 600px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04); /* ظلال ناعمة جداً */
+            max-width: 550px;
             width: 100%;
+            border: 1px solid #e2e8f0;
+        }
+        .form-control-lg {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            font-size: 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .form-control-lg:focus {
+            background-color: #ffffff;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+        .btn-primary-custom {
+            background-color: #4f46e5; /* لون نيلي عصري */
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+        }
+        .result-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
         .qr-img {
-            max-width: 150px;
-            border: 2px solid #1e3c72;
-            border-radius: 10px;
+            max-width: 140px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             padding: 5px;
             background: #fff;
         }
-        .stats-badge {
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 10px;
-            padding: 10px;
-            color: #fff;
-        }
-        .status-indicator {
-            font-size: 1.3rem;
-            font-weight: bold;
-            padding: 5px 15px;
+        .status-badge {
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 6px 16px;
             border-radius: 30px;
             display: inline-block;
         }
-        .table-custom {
-            font-size: 0.9rem;
+        .accordion-button:not(.collapsed) {
+            background-color: #f1f5f9;
+            color: #4f46e5;
         }
         .info-text {
             font-size: 0.8rem;
             font-style: italic;
-            opacity: 0.7;
+            opacity: 0.8;
             margin-top: 25px;
-            color: #666;
+            color: #64748b;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
 <div class="portal-card text-center">
-    <h3 class="mb-4" style="color: #1e3c72; font-weight: bold;">بوابة متابعة الحضور والالتزام</h3>
-    <p class="text-muted small">أدخل اسمك أو رقم موبايلك للاطلاع على تقرير حضورك وغيابك والـ QR كود</p>
+    <h3 class="mb-2" style="color: #0f172a; font-weight: 700;">بوابة استعلام العضوية</h3>
+    <p class="text-muted small mb-4">للخصوصية والأمان، يرجى إدخال اسمك ورقم تليفونك المسجل معاً للتحقق واستخراج الـ QR كود</p>
     
-    <div class="mb-3">
-        <input type="text" id="searchInput" class="form-control form-control-lg text-center" placeholder="اكتب اسمك أو رقم موبايلك...">
+    <div class="mb-3 text-start">
+        <label class="form-label small fw-semibold text-muted">الاسم ثلاثي أو ثنائي:</label>
+        <input type="text" id="nameInput" class="form-control form-control-lg text-center" placeholder="اكتب اسمك هنا...">
     </div>
-    <button onclick="searchStudent()" class="btn btn-primary btn-lg w-100 mb-4" style="background: #1e3c72; border: none;">بحث واستخراج البيانات 🔍</button>
+    
+    <div class="mb-4 text-start">
+        <label class="form-label small fw-semibold text-muted">رقم الموبايل (الواتساب):</label>
+        <input type="text" id="phoneInput" class="form-control form-control-lg text-center" placeholder="اكتب رقم موبايلك المسجل به...">
+    </div>
+    
+    <button onclick="verifyAndSearch()" class="btn btn-primary-custom btn-lg w-100 mb-4">تحقق واستخراج البيانات 🔐</button>
 
-    <!-- منطقة عرض النتيجة -->
+    <!-- منطقة عرض النتيجة التفاعلية -->
     <div id="resultArea" style="display: none;">
         <div id="cardsContainer"></div>
     </div>
@@ -79,7 +117,7 @@
 <script>
     let studentsDatabase = [];
 
-    // جلب ملف JSON من الريبو الجديد
+    // جلب ملف JSON المحدث تلقائياً من جيت هاب
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
@@ -97,82 +135,100 @@
             .toLowerCase();
     }
 
-    function searchStudent() {
-        const rawInput = document.getElementById('searchInput').value.trim();
-        const query = normalizeArabic(rawInput);
-        const resultArea = document.getElementById('resultArea');
+    function verifyAndSearch() {
+        const rawNameInput = document.getElementById('nameInput').value.trim();
+        const rawPhoneInput = document.getElementById('phoneInput').value.trim();
         const cardsContainer = document.getElementById('cardsContainer');
+        const resultArea = document.getElementById('resultArea');
         
         cardsContainer.innerHTML = ""; // تنظيف النتائج السابقة
 
-        if (!query) {
-            alert("من فضلك اكتب الاسم أو رقم التليفون أولاً");
+        if (!rawNameInput || !rawPhoneInput) {
+            alert("من فضلك أدخل الاسم ورقم الموبايل معاً لإتمام التحقق.");
             return;
         }
 
-        let matches = [];
+        const nameQuery = normalizeArabic(rawNameInput);
+        const nameWords = nameQuery.split(" ");
+        
+        // تنظيف رقم الموبايل المدخل والمسجل لضمان تطابق الأرقام بأي صيغة
+        const cleanPhoneInput = rawPhoneInput.replace(/\s+/g, '').replace(/^0/, '').replace(/^20/, '');
 
-        if (/^\d+$/.test(rawInput)) {
-            const cleanInput = rawInput.replace(/^0/, '').replace(/^20/, '');
-            matches = studentsDatabase.filter(student => {
-                const cleanPhone = String(student.phone).replace(/^0/, '').replace(/^20/, '');
-                return cleanPhone.includes(cleanInput);
-            });
-        } else {
-            const queryWords = query.split(" ");
-            matches = studentsDatabase.filter(student => {
-                const normalizedStudentName = normalizeArabic(student.name);
-                return queryWords.every(word => normalizedStudentName.includes(word));
-            });
-        }
+        // تصفية الطلاب الذين يطابقون الاسم ورقم الموبايل معاً (تحقق مزدوج)
+        const matches = studentsDatabase.filter(student => {
+            const normalizedStudentName = normalizeArabic(student.name);
+            const cleanStudentPhone = String(student.phone).replace(/\s+/g, '').replace(/^0/, '').replace(/^20/, '');
+            
+            const isNameMatch = nameWords.every(word => normalizedStudentName.includes(word));
+            const isPhoneMatch = cleanStudentPhone.includes(cleanPhoneInput);
+            
+            return isNameMatch && isPhoneMatch;
+        });
 
         if (matches.length > 0) {
             matches.forEach(student => {
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${student.id}`;
                 
                 // تحديد لون حالة الالتزام
-                let statusColor = "#28a745"; // Committed
-                if (student.commitment_status.includes("Dismissed")) statusColor = "#dc3545";
-                else if (student.commitment_status.includes("Danger")) statusColor = "#fd7e14";
-                else if (student.commitment_status.includes("Warning")) statusColor = "#ffc107";
+                let statusColor = "#10b981"; // Committed (أخضر هادئ)
+                let statusText = "ملتزم 🟢";
+                if (student.commitment_status.includes("Dismissed")) {
+                    statusColor = "#ef4444"; // أحمر
+                    statusText = "استبعاد فوري 🚨";
+                } else if (student.commitment_status.includes("Danger")) {
+                    statusColor = "#f59e0b"; // برتقالي
+                    statusText = "خطر 🔴";
+                } else if (student.commitment_status.includes("Warning")) {
+                    statusColor = "#eab308"; // أصفر
+                    statusText = "تحذير 🟡";
+                }
 
                 // توليد جدول الحضور
-                let attendedRows = student.attended_history.map(x => `<tr><td>${x.date}</td><td>${x.name}</td><td><span class="badge bg-success">حاضر</span></td></tr>`).join("");
-                if (!attendedRows) attendedRows = `<tr><td colspan="3" class="text-muted">لم يتم تسجيل حضور أي بروفات بعد</td></tr>`;
+                let attendedRows = student.attended_history.map(x => `<tr><td>${x.date}</td><td>${x.name}</td><td><span class="badge bg-success-subtle text-success">حاضر</span></td></tr>`).join("");
+                if (!attendedRows) attendedRows = `<tr><td colspan="3" class="text-muted small">لم يتم تسجيل حضور أي بروفات بعد</td></tr>`;
 
-                // توليد جدول الغياب والبروفات الفائتة
-                let missedRows = student.missed_history.map(x => `<tr><td>${x.date}</td><td>${x.name}</td><td><span class="badge bg-danger">غائب</span></td></tr>`).join("");
-                if (!missedRows) missedRows = `<tr><td colspan="3" class="text-muted">ممتاز! لا يوجد غيابات بدون عذر</td></tr>`;
+                // توليد جدول الغياب
+                let missedRows = student.missed_history.map(x => `<tr><td>${x.date}</td><td>${x.name}</td><td><span class="badge bg-danger-subtle text-danger">غائب</span></td></tr>`).join("");
+                if (!missedRows) missedRows = `<tr><td colspan="3" class="text-muted small text-success">ممتاز! لا يوجد غيابات بدون عذر</td></tr>`;
 
                 // توليد جدول الأعذار والجزاءات
-                let logsRows = student.history.map(x => `<tr><td>${x.date}</td><td><span class="badge bg-warning text-dark">${x.status}</span></td><td>${x.reason || "بدون سبب"}</td></tr>`).join("");
-                if (!logsRows) logsRows = `<tr><td colspan="3" class="text-muted">سجل الطالب خالي من الأعذار والإنذارات</td></tr>`;
+                let logsRows = student.history.map(x => `<tr><td>${x.date}</td><td><span class="badge bg-warning-subtle text-warning-emphasis">${x.status}</span></td><td class="small">${x.reason || "بدون سبب"}</td></tr>`).join("");
+                if (!logsRows) logsRows = `<tr><td colspan="3" class="text-muted small">سجل العضو خالي من الأعذار والإنذارات</td></tr>`;
+
+                // تحديد اسم الكورال بناءً على كود الطالب
+                const idPrefix = String(student.id).charAt(0);
+                let choirName = "Unknown";
+                if (idPrefix === "1") choirName = "Hows Erof";
+                else if (idPrefix === "2") choirName = "Saint Antony";
+                else if (idPrefix === "3") choirName = "Saint Pavly";
+                else if (idPrefix === "4") choirName = "Operete";
+                else if (idPrefix === "5") choirName = "Mowhobeen";
 
                 const cardHtml = `
-                    <div class="card mb-4 text-dark p-3 text-center" style="border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-                        <h4 style="color: #1e3c72; font-weight: bold;">${student.name}</h4>
-                        <p class="mb-1 text-muted">الكورال: <strong style="color: #2a5298;">${student.choir}</strong></p>
-                        <p class="text-muted mb-3">كود الحضور: <strong style="color: #d9534f; font-size: 1.2rem;">${student.id}</strong></p>
+                    <div class="result-card text-center">
+                        <h4 style="color: #0f172a; font-weight: 700;">${student.name}</h4>
+                        <p class="mb-1 text-muted small">الكورال: <strong style="color: #4f46e5;">${choirName}</strong></p>
+                        <p class="text-muted small mb-3">كود العضوية: <strong style="color: #ef4444;">${student.id}</strong></p>
                         
                         <div class="mb-3">
-                            <span class="status-indicator text-white" style="background-color: ${statusColor};">حالة الالتزام: ${student.commitment_status}</span>
+                            <span class="status-badge text-white" style="background-color: ${statusColor};">${statusText}</span>
                         </div>
 
-                        <!-- إحصائيات سريعة بالأرقام -->
-                        <div class="row g-2 mb-4 text-white">
-                            <div class="col-4"><div class="bg-primary p-2 rounded small">إجمالي البروفات<br><strong>${student.total_sessions}</strong></div></div>
-                            <div class="col-4"><div class="bg-success p-2 rounded small">الحضور<br><strong>${student.attended}</strong></div></div>
-                            <div class="col-4"><div class="bg-danger p-2 rounded small">الغياب الكلي<br><strong>${student.absent}</strong></div></div>
+                        <!-- إحصائيات سريعة بالأرقام ملونة بأناقة -->
+                        <div class="row g-2 mb-4 text-dark">
+                            <div class="col-4"><div class="p-2 rounded" style="background-color: #f1f5f9; font-size: 0.8rem;">البروفات<br><strong style="font-size: 1rem;">${student.total_sessions}</strong></div></div>
+                            <div class="col-4"><div class="p-2 rounded" style="background-color: #d1fae5; color: #065f46; font-size: 0.8rem;">الحضور<br><strong style="font-size: 1rem;">${student.attended}</strong></div></div>
+                            <div class="col-4"><div class="p-2 rounded" style="background-color: #fee2e2; color: #991b1b; font-size: 0.8rem;">الغياب الكلي<br><strong style="font-size: 1rem;">${student.absent}</strong></div></div>
                         </div>
-                        <div class="row g-2 mb-4 text-white justify-content-center">
-                            <div class="col-5"><div class="bg-warning text-dark p-2 rounded small">غياب بعذر<br><strong>${student.excused_absences}</strong></div></div>
-                            <div class="col-5"><div class="bg-secondary p-2 rounded small">إنذارات<br><strong>${student.warnings}</strong></div></div>
+                        <div class="row g-2 mb-4 justify-content-center">
+                            <div class="col-5"><div class="p-2 rounded" style="background-color: #fef3c7; color: #92400e; font-size: 0.8rem;">غياب بعذر<br><strong style="font-size: 1rem;">${student.excused_absences}</strong></div></div>
+                            <div class="col-5"><div class="p-2 rounded" style="background-color: #f3f4f6; color: #374151; font-size: 0.8rem;">الإنذارات<br><strong style="font-size: 1rem;">${student.warnings}</strong></div></div>
                         </div>
 
                         <!-- QR Code Section -->
                         <div class="mb-4">
                             <img src="${qrUrl}" class="qr-img mb-2" alt="QR Code">
-                            <button onclick="downloadQR('${qrUrl}', '${student.name}_QR.png')" class="btn btn-outline-primary btn-sm w-100">تحميل صورة الـ QR 📥</button>
+                            <button onclick="downloadQR('${qrUrl}', '${student.name}_QR.png')" class="btn btn-outline-primary btn-sm w-100" style="border-color: #4f46e5; color: #4f46e5;">تحميل صورة الـ QR 📥</button>
                         </div>
 
                         <!-- تفاصيل الحضور والغياب والأعذار -->
@@ -201,28 +257,14 @@
                 cardsContainer.innerHTML += cardHtml;
             });
 
+            // إضافة التذييل بعد الكروت
+            cardsContainer.innerHTML += `
+                <p class="info-text text-center">
+                    * رجاءً الاحتفاظ بهذه الصورة في مكان سهل الوصول إليه على موبايلك، فالكود والـ QR كود هما هويتك الأساسية في الكورال ويجب إظهارهما عند باب القاعة في كل بروفة.
+                </p>
+            `;
+
             resultArea.style.display = 'block';
         } else {
-            alert("البيانات غير مسجلة، يرجى التأكد من كتابة الاسم أو الرقم صحيحاً.");
-            resultArea.style.display = 'none';
-        }
-    }
-
-    async function downloadQR(url, filename) {
-        try {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-        } catch (error) {
-            console.error("Download failed:", error);
-        }
-    }
-</script>
-
-<!-- Bootstrap JS Bundle for Accordion to work -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+            alert("فشل التحقق: الاسم غير متطابق مع رقم الموبايل المسجل لدينا. يرجى مراجعة قائد الكورال.");
+            resultAre
