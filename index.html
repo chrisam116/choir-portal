@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة استخراج أكواد الكورال</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            padding: 15px;
+        }
+        .portal-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #333;
+            max-width: 450px;
+            width: 100%;
+        }
+        .qr-img {
+            max-width: 180px;
+            border: 3px solid #1e3c72;
+            border-radius: 10px;
+            padding: 5px;
+            background: #fff;
+        }
+        .info-text {
+            font-size: 0.82rem;
+            font-style: italic;
+            opacity: 0.7;
+            margin-top: 25px;
+            color: #666;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="portal-card text-center">
+    <h3 class="mb-4" style="color: #1e3c72; font-weight: bold;">بوابة استخراج الأكواد</h3>
+    <p class="text-muted small">أدخل اسمك (ثنائياً أو ثلاثياً) للحصول على كود الحضور والـ QR</p>
+    
+    <div class="mb-3">
+        <!-- دعم البحث برقم التليفون أو الاسم -->
+        <input type="text" id="searchInput" class="form-control form-control-lg text-center" placeholder="اكتب اسمك أو رقم موبايلك...">
+    </div>
+    <button onclick="searchStudent()" class="btn btn-primary btn-lg w-100 mb-4" style="background: #1e3c72; border: none;">بحث واستخراج 🔍</button>
+
+    <!-- منطقة عرض النتيجة -->
+    <div id="resultArea" style="display: none;">
+        <h4 id="studentName" style="color: #1e3c72; font-weight: bold;" class="mb-1"></h4>
+        <p class="text-muted mb-3">كود الحضور: <strong id="studentID" style="color: #d9534f; font-size: 1.2rem;"></strong></p>
+        <div class="mb-3">
+            <img id="qrImage" src="" class="qr-img" alt="QR Code">
+        </div>
+        <button id="downloadBtn" class="btn btn-success w-100 mb-2">تحميل صورة الـ QR 📥</button>
+        
+        <!-- السطر الإيطاليك الخفيف المطلب -->
+        <p class="info-text">
+            * رجاءً الاحتفاظ بهذه الصورة في مكان سهل الوصول إليه على موبايلك، فالكود والـ QR كود هما هويتك الأساسية في الكورال ويجب إظهارهما عند باب القاعة في كل بروفة.
+        </p>
+    </div>
+</div>
+
+<script>
+    let studentsDatabase = [];
+
+    // جلب ملف JSON من الريبو الجديد
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            studentsDatabase = data;
+        })
+        .catch(err => console.error("Error loading student database:", err));
+
+    function normalizeArabic(text) {
+        return text
+            .replace(/[أإآا]/g, 'ا')
+            .replace(/[ىي]/g, 'ي')
+            .replace(/[ةه]/g, 'ه')
+            .replace(/[\u064B-\u0652]/g, '') // إزالة التشكيل
+            .trim()
+            .toLowerCase();
+    }
+
+    function searchStudent() {
+        const rawInput = document.getElementById('searchInput').value.trim();
+        const query = normalizeArabic(rawInput);
+        const resultArea = document.getElementById('resultArea');
+        
+        if (!query) {
+            alert("من فضلك اكتب الاسم أو رقم التليفون أولاً");
+            return;
+        }
+
+        let found;
+
+        // لو المدخل أرقام فقط، يبحث برقم الموبايل
+        if (/^\d+$/.test(rawInput)) {
+            // تنظيف الرقم من الصفر الشمال أو كود الدولة للتطابق
+            const cleanInput = rawInput.replace(/^0/, '').replace(/^20/, '');
+            found = studentsDatabase.find(student => {
+                const cleanPhone = String(student.phone).replace(/^0/, '').replace(/^20/, '');
+                return cleanPhone.includes(cleanInput);
+            });
+        } else {
+            // البحث الذكي بالاسم الثنائي أو الثلاثي
+            const queryWords = query.split(" ");
+            found = studentsDatabase.find(student => {
+                const normalizedStudentName = normalizeArabic(student.name);
+                return queryWords.every(word => normalizedStudentName.includes(word));
+            });
+        }
+
+        if (found) {
+            document.getElementById('studentName').innerText = found.name;
+            document.getElementById('studentID').innerText = found.id;
+            
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${found.id}`;
+            document.getElementById('qrImage').src = qrUrl;
+            
+            document.getElementById('downloadBtn').onclick = function() {
+                downloadQR(qrUrl, `${found.name}_QR.png`);
+            };
+
+            resultArea.style.display = 'block';
+        } else {
+            alert("البيانات غير مسجلة، يرجى التأكد من كتابة الاسم أو الرقم صحيحاً.");
+            resultArea.style.display = 'none';
+        }
+    }
+
+    async function downloadQR(url, filename) {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        } catch (error) {
+            console.error("Download failed:", error);
+        }
+    }
+</script>
+
+</body>
+</html>
