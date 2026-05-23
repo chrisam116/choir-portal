@@ -8,23 +8,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #f1f5f9;
+            color: #1e293b;
             padding: 20px;
         }
         .portal-card {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 30px;
             padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
             max-width: 580px;
             width: 100%;
             transition: max-width 0.4s ease;
@@ -36,26 +36,26 @@
         .input-group-custom label {
             font-size: 0.9rem;
             font-weight: 600;
-            color: #94a3b8;
+            color: #475569;
             margin-bottom: 8px;
             display: block;
         }
         .form-control-lg {
             border-radius: 16px;
-            border: 2px solid #334155;
-            background-color: rgba(15, 23, 42, 0.6);
+            border: 2px solid #cbd5e1;
+            background-color: rgba(255, 255, 255, 0.9);
             font-size: 1.05rem;
-            color: #f8fafc;
+            color: #0f172a;
             transition: all 0.3s ease;
         }
         .form-control-lg:focus {
-            border-color: #3b82f6;
-            background-color: rgba(15, 23, 42, 0.9);
-            color: #fff;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+            border-color: #2563eb;
+            background-color: #ffffff;
+            color: #000;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
         }
         .btn-search {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
             color: #fff;
             border: none;
             border-radius: 16px;
@@ -63,21 +63,21 @@
             padding: 16px;
             font-size: 1.1rem;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
         }
         .btn-search:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.4);
             color: #fff;
         }
-        /* تصميم الكارت التعريفي المطور */
+        /* تصميم كروت الأعضاء المطور بالوضع المضيء */
         .result-card {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 24px;
             padding: 24px;
             margin-bottom: 10px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.04), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -90,11 +90,11 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(90deg, #2563eb, #8b5cf6);
         }
         .qr-section {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
@@ -106,17 +106,18 @@
             border-radius: 12px;
             padding: 8px;
             background: #fff;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
             margin-bottom: 12px;
         }
         .member-badge {
-            background: linear-gradient(135deg, #334155, #1e293b);
-            color: #3b82f6;
+            background: #f1f5f9;
+            color: #1e293b;
             font-weight: 800;
             font-size: 1.1rem;
             padding: 6px 16px;
             border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            border: 1px solid #cbd5e1;
             display: inline-block;
             margin-bottom: 15px;
             letter-spacing: 0.5px;
@@ -127,7 +128,6 @@
             padding: 8px 18px;
             border-radius: 50px;
             display: inline-block;
-            backdrop-filter: blur(5px);
             margin-bottom: 20px;
         }
         .stat-grid {
@@ -137,12 +137,12 @@
             margin-bottom: 15px;
         }
         .stat-card {
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 14px;
             padding: 10px;
             font-size: 0.8rem;
-            color: #94a3b8;
+            color: #475569;
             transition: transform 0.2s;
         }
         .stat-card:hover {
@@ -150,62 +150,79 @@
         }
         .stat-card strong {
             font-size: 1.3rem;
-            color: #f8fafc;
+            color: #0f172a;
             display: block;
             margin-top: 4px;
         }
         .accordion-item {
-            border: 1px solid #334155;
+            border: 1px solid #e2e8f0;
             border-radius: 14px !important;
             margin-bottom: 8px;
             overflow: hidden;
-            background: #1e293b;
+            background: #ffffff;
         }
         .accordion-button {
-            background: #1e293b;
-            color: #cbd5e1;
+            background: #ffffff;
+            color: #475569;
             font-weight: 600;
             font-size: 0.88rem;
             padding: 12px 16px;
         }
         .accordion-button:not(.collapsed) {
-            background-color: #334155;
-            color: #3b82f6;
+            background-color: #f8fafc;
+            color: #2563eb;
         }
         .accordion-body {
-            background: #0f172a;
-            color: #94a3b8;
+            background: #f8fafc;
+            color: #334155;
             padding: 15px;
         }
         .table-custom {
-            color: #cbd5e1;
+            color: #334155;
             font-size: 0.85rem;
             margin-bottom: 0;
         }
         .table-custom th {
-            color: #94a3b8;
-            border-bottom: 2px solid #334155;
+            color: #475569;
+            border-bottom: 2px solid #cbd5e1;
+            background-color: #f1f5f9;
         }
         .table-custom td {
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid #e2e8f0;
             vertical-align: middle;
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 10px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s ease;
+        }
+        .btn-download:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
 <div class="portal-card text-center" id="mainPortalCard">
-    <h3 class="mb-2" style="color: #f8fafc; font-weight: 800; letter-spacing: -0.5px;">بوابة التحقق واستخراج الأكواد</h3>
+    <h3 class="mb-2" style="color: #0f172a; font-weight: 800; letter-spacing: -0.5px;">بوابة التحقق واستخراج الأكواد</h3>
     <p class="text-muted small mb-4">يرجى ملء البيانات التالية للتحقق الآمن من هويتك وعرض تقرير حضورك</p>
     
     <div class="input-group-custom">
         <label>الاسم ثلاثي أو ثنائي كما هو مسجل</label>
-        <input type="text" id="nameInput" class="form-control form-control-lg text-center" placeholder="مثال: Ramez Ehab">
+        <input type="text" id="nameInput" class="form-control form-control-lg text-center" placeholder="مثال: Chris Samuel">
     </div>
     
     <div class="input-group-custom">
         <label>آخر 4 أرقام من موبايلك المسجل به</label>
-        <input type="tel" id="phoneInput" maxlength="4" class="form-control form-control-lg text-center" placeholder="مثال: 5414">
+        <input type="tel" id="phoneInput" maxlength="4" class="form-control form-control-lg text-center" placeholder="مثال: 8843">
     </div>
     
     <button onclick="searchStudent()" class="btn btn-search btn-lg w-100 mb-4">استخراج تقرير الحضور والـ QR 🔍</button>
@@ -256,7 +273,7 @@
         }
 
         const queryWords = inputName.split(" ");
-        const matches = studentsDatabase.filter(student => {
+        let matches = studentsDatabase.filter(student => {
             const normalizedStudentName = normalizeArabic(student.name);
             const normalizedStudentPhone = normalizePhone(student.phone);
             const registeredLast4 = normalizedStudentPhone.slice(-4);
@@ -268,7 +285,10 @@
         });
 
         if (matches.length > 0) {
-            // تمديد عرض الكارت الرئيسي ليصبح عريضاً (1140 بيكسل) عند وجود نتائج متعددة
+            // ترتيب الكروت تصاعدياً بناءً على كود العازف
+            matches.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+            // تمديد عرض الكارت الرئيسي ليصبح عريضاً عند وجود نتائج متعددة لتظهر متجاورة
             if (matches.length > 1) {
                 mainPortalCard.style.maxWidth = "1140px";
             } else {
@@ -278,14 +298,14 @@
             matches.forEach(student => {
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${student.id}`;
                 
-                // تحديد شكل وألوان حالة الالتزام بشكل ناعم وعصري
-                let badgeStyle = "background-color: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);";
+                // تحديد شكل وألوان حالة الالتزام بشكل ناعم وعصري في الوضع المضيء
+                let badgeStyle = "background-color: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0;";
                 if (student.commitment_status.includes("Dismissed")) {
-                    badgeStyle = "background-color: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);";
+                    badgeStyle = "background-color: #fef2f2; color: #dc2626; border: 1.5px solid #fca5a5;";
                 } else if (student.commitment_status.includes("Danger")) {
-                    badgeStyle = "background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);";
+                    badgeStyle = "background-color: #fff7ed; color: #ea580c; border: 1.5px solid #ffedd5;";
                 } else if (student.commitment_status.includes("Warning")) {
-                    badgeStyle = "background-color: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.3);";
+                    badgeStyle = "background-color: #fef9c3; color: #ca8a04; border: 1.5px solid #fef08a;";
                 }
 
                 let attendedRows = student.attended_history.map(x => `<tr><td>${x.date}</td><td>${x.name}</td><td><span class="badge bg-success-subtle text-success border border-success-subtle">حاضر</span></td></tr>`).join("");
@@ -297,43 +317,48 @@
                 let logsRows = student.history.map(x => `<tr><td>${x.date}</td><td><span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">${x.status}</span></td><td>${x.reason || "بدون سبب"}</td></tr>`).join("");
                 if (!logsRows) logsRows = `<tr><td colspan="3" class="text-muted text-center py-3">سجل الطالب خالي من الأعذار والإنذارات</td></tr>`;
 
-                // تحديد حجم العمود في الشبكة: 6 من 12 (نصف الشاشة) في الشاشات الكبيرة، و 12 (كامل الشاشة) في الجوال
-                const colSize = matches.length > 1 ? "col-12 col-lg-6" : "col-12";
+                // الحجم في الجوال يكون بكامل الشاشة، وفي الشاشات الكبيرة ينقسم لنصفين
+                const colSize = matches.length > 1 ? "col-12 col-md-6" : "col-12";
 
                 const cardHtml = `
                     <div class="${colSize}">
                         <div class="result-card">
                             
-                            <!-- القسم العلوي: الكود والـ QR أولاً بشكل عريض وأنيق -->
-                            <div class="qr-section">
-                                <div class="member-badge">كود الحضور: ${student.id}</div>
-                                <div class="mb-3">
-                                    <img src="${qrUrl}" class="qr-img" alt="QR Code">
-                                </div>
-                                <button onclick="downloadQR('${qrUrl}', '${student.name}_QR.png')" class="btn btn-outline-primary btn-sm px-4 py-2 w-100" style="border-radius: 12px; font-weight: 600;">تحميل صورة الـ QR 📥</button>
-                            </div>
-
-                            <!-- القسم المتوسط: هوية العضو وحالة التزامه -->
-                            <h4 style="color: #f8fafc; font-weight: 800;" class="mb-1">${student.name}</h4>
-                            <p class="mb-2 text-muted">الكورال: <strong style="color: #3b82f6;">${student.choir}</strong></p>
+                            <!-- 1. الاسم -->
+                            <h4 style="color: #0f172a; font-weight: 800;" class="mb-1">${student.name}</h4>
                             
+                            <!-- 2. الكورال -->
+                            <p class="mb-2 text-muted" style="font-size: 0.95rem;">الكورال: <strong style="color: #2563eb;">${student.choir}</strong></p>
+                            
+                            <!-- 3. حالة الالتزام -->
                             <div class="mb-3">
                                 <span class="status-badge" style="${badgeStyle}">حالة الالتزام: ${student.commitment_status}</span>
                             </div>
 
-                            <!-- شبكة المؤشرات الرقمية التفاعلية -->
-                            <div class="stat-grid">
-                                <div class="stat-card">البروفات الجارية<strong>${student.total_sessions}</strong></div>
-                                <div class="stat-card" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.15);">الحضور<strong style="color: #10b981;">${student.attended}</strong></div>
-                                <div class="stat-card" style="background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.15);">الغياب الكلي<strong style="color: #ef4444;">${student.absent}</strong></div>
-                            </div>
-                            <div class="row g-2 mb-4 justify-content-center">
-                                <div class="col-4"><div class="stat-card" style="background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.15);">غياب بعذر<strong style="color: #f59e0b;">${student.excused_absences}</strong></div></div>
-                                <div class="col-4"><div class="stat-card" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.15);">غياب امتحانات<strong style="color: #3b82f6;">${student.exam_absences || 0}</strong></div></div>
-                                <div class="col-4"><div class="stat-card">الإنذارات<strong style="color: #cbd5e1;">${student.warnings}</strong></div></div>
+                            <!-- 4. كود الحضور -->
+                            <div class="member-badge mb-3">كود الحضور: ${student.id}</div>
+
+                            <!-- 5 و6. الـ QR كود المربع الكبير وزرار التحميل في السنتر -->
+                            <div class="qr-section">
+                                <div class="mb-3">
+                                    <img src="${qrUrl}" class="qr-img" alt="QR Code">
+                                </div>
+                                <button onclick="downloadQR('${qrUrl}', '${student.name}_QR.png')" class="btn btn-download w-100">تحميل صورة الـ QR 📥</button>
                             </div>
 
-                            <!-- القسم السفلي: السجلات التفاعلية (أكورديون) -->
+                            <!-- 7. شبكة المؤشرات الرقمية التفاعلية -->
+                            <div class="stat-grid">
+                                <div class="stat-card">البروفات الجارية<strong>${student.total_sessions}</strong></div>
+                                <div class="stat-card" style="background: #f0fdf4; border-color: #bbf7d0; font-weight: 600;">الحضور<strong style="color: #16a34a;">${student.attended}</strong></div>
+                                <div class="stat-card" style="background: #fef2f2; border-color: #fca5a5; font-weight: 600;">الغياب الكلي<strong style="color: #dc2626;">${student.absent}</strong></div>
+                            </div>
+                            <div class="row g-2 mb-4 justify-content-center">
+                                <div class="col-4"><div class="stat-card" style="background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.15);">غياب بعذر<strong style="color: #ea580c;">${student.excused_absences}</strong></div></div>
+                                <div class="col-4"><div class="stat-card" style="background: rgba(37, 99, 235, 0.05); border-color: rgba(37, 99, 235, 0.15);">غياب امتحانات<strong style="color: #2563eb;">${student.exam_absences || 0}</strong></div></div>
+                                <div class="col-4"><div class="stat-card">الإنذارات<strong style="color: #475569;">${student.warnings}</strong></div></div>
+                            </div>
+
+                            <!-- 8. القسم السفلي: السجلات التفاعلية (أكورديون) -->
                             <div class="accordion text-start" id="accordion-${student.id}">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
