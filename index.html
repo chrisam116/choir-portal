@@ -45,7 +45,7 @@
         /* ضبط إدخال الاسم ليكون بالإنجليزية LTR تلقائياً */
         #nameInput {
             direction: ltr !important;
-            text-align: left !important;
+            text-align: center !important;
         }
         .form-control-lg {
             border-radius: 16px;
@@ -232,12 +232,12 @@
     
     <div class="input-group-custom">
         <label>الاسم ثلاثي أو ثنائي كما هو مسجل</label>
-        <input type="text" id="nameInput" class="form-control form-control-lg" placeholder="مثال: Ramez Ehab">
+        <input type="text" id="nameInput" class="form-control form-control-lg text-center" placeholder="مثال: Chris Samuel">
     </div>
     
     <div class="input-group-custom">
         <label>آخر 4 أرقام من موبايلك المسجل به</label>
-        <input type="tel" id="phoneInput" maxlength="4" class="form-control form-control-lg text-center" placeholder="مثال: 5414">
+        <input type="tel" id="phoneInput" maxlength="4" class="form-control form-control-lg text-center" placeholder="مثال: 8843">
     </div>
     
     <button onclick="searchStudent()" class="btn btn-search btn-lg w-100 mb-4">استخراج تقرير الحضور والـ QR 🔍</button>
